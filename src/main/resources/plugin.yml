@@ -1,0 +1,7 @@
+name: FloorIsLava
+version: '${project.version}'
+main: stiggles.floorislava.Main
+api-version: 1.20
+commands:
+  fil:
+    description: Starts the Floor is Lava game!
