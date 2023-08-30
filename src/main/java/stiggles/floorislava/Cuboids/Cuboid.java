@@ -97,7 +97,6 @@ public class Cuboid implements Iterable<Block>, Cloneable, ConfigurationSerializ
         this.z1 = Math.min(z1, z2);
         this.z2 = Math.max(z1, z2);
     }
-
     /**
      * Construct a Cuboid using a map with the following keys: worldName, x1, x2, y1, y2, z1, z2
      *

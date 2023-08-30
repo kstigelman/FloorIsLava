@@ -48,5 +48,4 @@ public class GameStartManager {
     public static void cancelCountdown () {
         countdown = -1;
     }
-
 }
