@@ -63,5 +63,7 @@ public final class Main extends JavaPlugin {
     public static stiggles.floorislava.Cuboid getPlayArea () {
         return playArea;
     }
-
+    public static void setPlayArea (stiggles.floorislava.Cuboid newArea) {
+        playArea = newArea;
+    }
 }

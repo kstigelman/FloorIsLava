@@ -15,13 +15,18 @@ public class GameStartManager {
     private static boolean full = false;
 
     public static void everySecond () {
-        if (PlayerManager.getPlayerCount() <= 1) {
+        if (Bukkit.getOnlinePlayers().size() <= 1) {
+            Bukkit.getConsoleSender().sendMessage("Less than 1");
             cancelCountdown();
             return;
         }
+        if (countdown == -1)
+            return;
+
 
         if (countdown == 0) {
             if (RoundManager.getRoundId() == -1) {
+                Bukkit.getConsoleSender().sendMessage("Start!");
                 RoundManager.start();
                 return;
             }
@@ -33,6 +38,8 @@ public class GameStartManager {
 
         if (countdown > -1)
             --countdown;
+
+        Bukkit.getConsoleSender().sendMessage("Time: " + countdown);
     }
 
 
@@ -43,7 +50,7 @@ public class GameStartManager {
         return countdown;
     }
     public static void startCountdown () {
-        countdown = 60;
+        countdown = 12;
     }
     public static void cancelCountdown () {
         countdown = -1;
