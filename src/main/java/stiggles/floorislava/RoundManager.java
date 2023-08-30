@@ -9,21 +9,23 @@ import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.potion.PotionEffect;
 import org.bukkit.potion.PotionEffectType;
+import stiggles.floorislava.Cuboids.Cuboid;
 
 import java.util.concurrent.TimeUnit;
 
 public class RoundManager {
-
     private static int roundId = -1;
-    private static int currentLevel = -1;
+
     private static int timer = -1;
+    private static int targetTime = 0;
+
+    private static int currentLevel = -1;
     private static int nextLevel = 0;
-    private static int nextTarget = 0;
+    private static int taskId = -1;
+
     private static BossBar levelBossBar;
 
-    private static final int MAX_HEIGHT = 120;
 
-    private static int taskId = -1;
 
     public static void everySecond () {
         Bukkit.getConsoleSender().sendMessage("RoundID: " + roundId + " time: " + timer);
@@ -52,11 +54,11 @@ public class RoundManager {
                 setNextLevel(80, 300);
                 return;
             }
-            if (timer % (timer / nextLevel) == 0)
+            if (timer % (targetTime / nextLevel) == 0)
                 nextLevel();
         }
         if (roundId == 2) {
-            if (timer % (timer / nextLevel) == 0)
+            if (timer % (targetTime / nextLevel) == 0)
                 nextLevel();
             if (timer == 0) {
                 ++roundId;
@@ -121,6 +123,8 @@ public class RoundManager {
     }
     public static void end () {
         hideLevelBossBar();
+        cancelTask();
+
         if (PlayerManager.getPlayerCount() == 0) {
             //Tie!
             for (Player player : Bukkit.getOnlinePlayers())
@@ -144,7 +148,9 @@ public class RoundManager {
         if (currentLevel % 10 == 0)
             PlayerManager.sendPlayersMessage(ChatColor.RED + "The lava is currently at y=" + currentLevel);
 
-        Main.setPlayArea(Main.getPlayArea().shift(stiggles.floorislava.Cuboid.CuboidDirection.Up, 1));
+        updateLevelBossBar();
+
+        Main.setPlayArea(Main.getPlayArea().shift(Cuboid.CuboidDirection.Up, 1));
         for (Block b : Main.getPlayArea())
             if (b.getType().equals(Material.AIR))
                 b.setType(Material.LAVA);
@@ -153,7 +159,7 @@ public class RoundManager {
     public static void setNextLevel (int newLevel, int time) {
         nextLevel = newLevel;
         timer = time;
-
+        targetTime = time;
     }
 
     public static void cancelTimer () {
@@ -172,9 +178,12 @@ public class RoundManager {
         for (Player p : Bukkit.getOnlinePlayers())
             levelBossBar.addPlayer(p);
 
+        updateLevelBossBar();
+    }
+    public static void updateLevelBossBar () {
         levelBossBar.setVisible(true);
         levelBossBar.setTitle("Current Lava Level: " + currentLevel);
-        levelBossBar.setProgress((float) (currentLevel + 1) / (MAX_HEIGHT - 4));
+        levelBossBar.setProgress((float) (currentLevel + 1) / (Main.MAX_HEIGHT - 4));
     }
     public static void hideLevelBossBar () {
         if (levelBossBar == null)
@@ -184,5 +193,10 @@ public class RoundManager {
     }
     public static int getCurrentLevel () {
         return currentLevel;
+    }
+
+    public static void cancelTask () {
+        Bukkit.getScheduler().cancelTask(taskId);
+        taskId = -1;
     }
 }

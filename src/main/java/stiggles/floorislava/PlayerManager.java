@@ -1,5 +1,6 @@
 package stiggles.floorislava;
 
+import org.bukkit.Bukkit;
 import org.bukkit.GameMode;
 import org.bukkit.Sound;
 import org.bukkit.entity.Player;
@@ -15,6 +16,14 @@ public class PlayerManager {
     private static boolean full = false;
 
 
+    public static void sendOnlinePlayersMessage (String msg) {
+        for (Player p : Bukkit.getOnlinePlayers())
+            p.sendMessage(msg);
+    }
+    public static void sendOnlinePlayersSound (Sound sound, float pitch) {
+        for (Player p : players)
+            p.playSound(p.getLocation(), sound, 1, pitch);
+    }
     public static void sendPlayersMessage(String msg) {
         for (Player p : players)
             p.sendMessage(msg);

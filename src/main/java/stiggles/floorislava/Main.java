@@ -2,24 +2,19 @@ package stiggles.floorislava;
 
 import org.bukkit.*;
 import org.bukkit.block.Block;
-import org.bukkit.entity.Player;
 import org.bukkit.plugin.java.JavaPlugin;
-
-import java.io.File;
+import stiggles.floorislava.Cuboids.Cuboid;
 
 public final class Main extends JavaPlugin {
 
     private static Main instance;
     private static World world;
-    private static stiggles.floorislava.Cuboid playArea;
-    private static stiggles.floorislava.Cuboid bedrock;
+    private static Cuboid playArea;
+    private static Cuboid bedrock;
 
-    public Main () {
-
-    }
-
-
-
+    //Default world height is decreased for the purpose of this minigame. This will be checked in BuildListener
+    public static final int MAX_HEIGHT = 120;
+    private static int taskId = -1;
     @Override
     public void onEnable() {
         // Plugin startup logic
@@ -31,8 +26,8 @@ public final class Main extends JavaPlugin {
 
         world.setGameRule(GameRule.DO_DAYLIGHT_CYCLE, false);
 
-        playArea = new stiggles.floorislava.Cuboid(world, 100, 0, 100, -100, 1, -100);
-        bedrock = new stiggles.floorislava.Cuboid (world, 100, -1, 100, -100, -1, -100);
+        playArea = new Cuboid(world, 100, 0, 100, -100, 1, -100);
+        bedrock = new Cuboid (world, 100, -1, 100, -100, -1, -100);
         for (Block block : bedrock)
             block.setType (Material.BEDROCK);
 
@@ -44,26 +39,26 @@ public final class Main extends JavaPlugin {
 
         Bukkit.getPluginCommand("fil").setExecutor(new GameCommand());
 
-        Bukkit.getScheduler().scheduleSyncRepeatingTask(this, GameStartManager::everySecond, 0, 20);
+        taskId = Bukkit.getScheduler().scheduleSyncRepeatingTask(this, GameStartManager::everySecond, 0, 20);
     }
 
     @Override
     public void onDisable() {
         // Plugin shutdown logic
         instance = null;
+        Bukkit.getScheduler().cancelTask(taskId);
     }
 
     public static Main getInstance() {
         return instance;
     }
-
     public static World getWorld () {
         return world;
     }
-    public static stiggles.floorislava.Cuboid getPlayArea () {
+    public static Cuboid getPlayArea () {
         return playArea;
     }
-    public static void setPlayArea (stiggles.floorislava.Cuboid newArea) {
+    public static void setPlayArea (Cuboid newArea) {
         playArea = newArea;
     }
 }

@@ -7,14 +7,16 @@ import org.bukkit.event.Listener;
 import org.bukkit.event.block.BlockBreakEvent;
 import org.bukkit.event.block.BlockPlaceEvent;
 
+/**
+ * Listener checks for build-related events such as blocks place and blocks broken and checks that the locations are
+ *   valid for the game's play area.
+ */
 public class BuildListener implements Listener {
-    private final int MAX_BUILD_LIMIT = 120;
-
     @EventHandler
     public void onBlockPlace (BlockPlaceEvent e) {
-        if (e.getBlock().getLocation().getBlockY() > MAX_BUILD_LIMIT) {
+        if (e.getBlock().getLocation().getBlockY() > Main.MAX_HEIGHT) {
             e.setCancelled(true);
-            e.getPlayer().sendMessage(ChatColor.GRAY + "Build height limited to " + MAX_BUILD_LIMIT);
+            e.getPlayer().sendMessage(ChatColor.GRAY + "Build height limited to " + Main.MAX_HEIGHT);
         }
 
         if (RoundManager.getRoundId () == -1)
@@ -23,9 +25,9 @@ public class BuildListener implements Listener {
     }
     @EventHandler
     public void onBlockBreak (BlockBreakEvent e) {
-        if (e.getBlock().getLocation().getBlockY() > MAX_BUILD_LIMIT) {
+        if (e.getBlock().getLocation().getBlockY() > Main.MAX_HEIGHT) {
             e.setCancelled(true);
-            e.getPlayer().sendMessage(ChatColor.GRAY + "Build height limited to " + MAX_BUILD_LIMIT);
+            e.getPlayer().sendMessage(ChatColor.GRAY + "Build height limited to " + Main.MAX_HEIGHT);
         }
 
         if (RoundManager.getRoundId () == -1)

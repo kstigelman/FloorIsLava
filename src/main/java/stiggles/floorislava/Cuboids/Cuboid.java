@@ -1,4 +1,4 @@
-package stiggles.floorislava;
+package stiggles.floorislava.Cuboids;
 
 import org.bukkit.Bukkit;
 import org.bukkit.Chunk;

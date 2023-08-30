@@ -15,6 +15,9 @@ public class MovementListener implements Listener {
                 Location from = e.getFrom();
                 Location to = e.getTo();
 
+                if (to == null)
+                    return;
+
                 if (from.getX() != to.getX())
                     e.setCancelled(true);
                 else if (from.getY() != to.getY())

@@ -1,12 +1,11 @@
 package stiggles.floorislava;
 
 import org.bukkit.*;
-import org.bukkit.entity.Player;
 
-import java.util.HashMap;
-
-
-
+/**
+ * Runs all processes relating to the pre-game period. Begins and updates a countdown to the game starting.
+ *   Once the countdown reaches 0, control is given to RoundManager.
+ */
 public class GameStartManager {
     public static final int MAX_COUNTDOWN_TIME = 120;
     public static final int SHORTENED_COUNTDOWN = 10;
@@ -16,32 +15,26 @@ public class GameStartManager {
 
     public static void everySecond () {
         if (Bukkit.getOnlinePlayers().size() <= 1) {
-            Bukkit.getConsoleSender().sendMessage("Less than 1");
             cancelCountdown();
             return;
         }
         if (countdown == -1)
             return;
 
-
         if (countdown == 0) {
             if (RoundManager.getRoundId() == -1) {
-                Bukkit.getConsoleSender().sendMessage("Start!");
                 RoundManager.start();
                 return;
             }
         }
         if (countdown % 30 == 0 || countdown <= 10) {
-            PlayerManager.sendPlayersMessage(ChatColor.GRAY + "Game begins in " + countdown);
-            PlayerManager.sendPlayersSound(Sound.UI_BUTTON_CLICK, 1);
+            PlayerManager.sendOnlinePlayersMessage(ChatColor.GRAY + "Game begins in " + countdown);
+            PlayerManager.sendOnlinePlayersSound(Sound.UI_BUTTON_CLICK, 1);
         }
 
         if (countdown > -1)
             --countdown;
-
-        Bukkit.getConsoleSender().sendMessage("Time: " + countdown);
     }
-
 
     public static void setCountdown (int time) {
         countdown = time;

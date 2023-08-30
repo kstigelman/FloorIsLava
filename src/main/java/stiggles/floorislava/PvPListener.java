@@ -6,7 +6,6 @@ import org.bukkit.event.Listener;
 import org.bukkit.event.entity.EntityDamageByEntityEvent;
 
 public class PvPListener implements Listener {
-
     @EventHandler
     public void onPlayerDamage (EntityDamageByEntityEvent e) {
         //Grace period
