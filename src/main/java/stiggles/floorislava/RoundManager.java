@@ -6,6 +6,7 @@ import org.bukkit.boss.BarColor;
 import org.bukkit.boss.BarStyle;
 import org.bukkit.boss.BossBar;
 import org.bukkit.entity.Player;
+import org.bukkit.inventory.ItemStack;
 import org.bukkit.potion.PotionEffect;
 import org.bukkit.potion.PotionEffectType;
 
@@ -69,7 +70,7 @@ public class RoundManager {
 
     public static void start () {
         roundId = 0;
-        timer = 61;
+        timer = 300;
 
         Main.getWorld().setGameRule(GameRule.DO_IMMEDIATE_RESPAWN, true);
         Main.getWorld().setGameRule(GameRule.SPECTATORS_GENERATE_CHUNKS, false);
@@ -77,19 +78,37 @@ public class RoundManager {
         Main.getWorld().setGameRule(GameRule.DO_INSOMNIA, false);
 
         for (Player player : Bukkit.getOnlinePlayers()) {
-            PlayerManager.addPlayer (player);
-
             player.sendMessage(ChatColor.GREEN + "The game has begun. Good luck...");
             player.playSound(player, Sound.ENTITY_ENDER_DRAGON_GROWL, 1, 0);
 
-            if (player.getGameMode().equals(GameMode.SURVIVAL))
-                player.addPotionEffect(new PotionEffect(PotionEffectType.REGENERATION, 30 * 20, 4, false, false));
+            if (!player.getGameMode().equals(GameMode.SURVIVAL))
+                return;
+
+            PlayerManager.addPlayer (player);
+
+            player.addPotionEffect(new PotionEffect(PotionEffectType.SATURATION, timer * 20, 4, false, false));
+            player.addPotionEffect(new PotionEffect(PotionEffectType.REGENERATION, timer * 20, 4, false, false));
 
             player.getInventory().clear();
             player.setFoodLevel(20);
             player.setSaturation(10.0F);
             player.getWorld().setTime(0);
             showLevelBossBar();
+
+            player.getInventory().setHelmet(new ItemStack(Material.CHAINMAIL_HELMET));
+            player.getInventory().setHelmet(new ItemStack(Material.CHAINMAIL_CHESTPLATE));
+            player.getInventory().setHelmet(new ItemStack(Material.CHAINMAIL_LEGGINGS));
+            player.getInventory().setHelmet(new ItemStack(Material.CHAINMAIL_BOOTS));
+
+            player.getInventory().addItem(new ItemStack(Material.STONE_SWORD));
+            player.getInventory().addItem(new ItemStack(Material.STONE_PICKAXE));
+            player.getInventory().addItem(new ItemStack(Material.STONE_AXE));
+            player.getInventory().addItem(new ItemStack(Material.STONE_SHOVEL));
+
+            player.getInventory().addItem(new ItemStack(Material.APPLE, 4));
+
+            player.getInventory().addItem(new ItemStack(Material.BOW));
+            player.getInventory().addItem(new ItemStack(Material.ARROW, 16));
         }
 
         taskId = Bukkit.getScheduler().scheduleSyncRepeatingTask(Main.getInstance(), new Runnable() {

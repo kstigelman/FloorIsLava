@@ -10,12 +10,17 @@ public class PvPListener implements Listener {
     @EventHandler
     public void onPlayerDamage (EntityDamageByEntityEvent e) {
         //Grace period
-        if (RoundManager.getRoundId() != 0)
+        if (RoundManager.getRoundId() > 0)
             return;
-        if (e.getDamager() instanceof Player) {
-            if (e.getEntity() instanceof Player) {
+        if (e.getEntity() instanceof Player) {
+            if (e.getDamager() instanceof Player) {
                 e.setCancelled(true);
             }
+            if (((Player) e.getEntity()).getHealth() == 0) {
+                e.setCancelled(true);
+                ((Player) e.getEntity()).setHealth(1);
+            }
+
         }
     }
 }
