@@ -15,6 +15,8 @@ public final class Main extends JavaPlugin {
     //Default world height is decreased for the purpose of this minigame. This will be checked in BuildListener
     public static final int MAX_HEIGHT = 120;
     private static int taskId = -1;
+
+    private static boolean hardcore = false;
     @Override
     public void onEnable() {
         // Plugin startup logic
@@ -60,5 +62,13 @@ public final class Main extends JavaPlugin {
     }
     public static void setPlayArea (Cuboid newArea) {
         playArea = newArea;
+    }
+
+    public static boolean toggleHardcore () {
+        hardcore = !hardcore;
+        return hardcore;
+    }
+    public static boolean isHardcore () {
+        return hardcore;
     }
 }
