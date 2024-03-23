@@ -5,6 +5,8 @@ import org.bukkit.*;
 /**
  * Runs all processes relating to the pre-game period. Begins and updates a countdown to the game starting.
  *   Once the countdown reaches 0, control is given to RoundManager.
+ *
+ * @author Kyler Stigelman
  */
 public class GameStartManager {
     public static final int MAX_COUNTDOWN_TIME = 120;

@@ -12,6 +12,8 @@ import org.bukkit.event.player.PlayerInteractEvent;
 /**
  * Listener checks for build-related events such as blocks place and blocks broken and checks that the locations are
  *   valid for the game's play area.
+ *
+ * @author Kyler Stigelman
  */
 public class BuildListener implements Listener {
     @EventHandler
