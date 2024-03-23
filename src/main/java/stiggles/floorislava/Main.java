@@ -39,6 +39,8 @@ public final class Main extends JavaPlugin {
         Bukkit.getPluginManager().registerEvents(new PlayerDeathListener(), this);
         Bukkit.getPluginManager().registerEvents(new PvPListener(), this);
 
+        Bukkit.getPluginManager().registerEvents(new AllMiscEvents(), this);
+
         Bukkit.getPluginCommand("fil").setExecutor(new GameCommand());
 
         taskId = Bukkit.getScheduler().scheduleSyncRepeatingTask(this, GameStartManager::everySecond, 0, 20);

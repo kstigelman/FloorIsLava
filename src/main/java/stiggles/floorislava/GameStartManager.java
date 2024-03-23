@@ -43,7 +43,7 @@ public class GameStartManager {
         return countdown;
     }
     public static void startCountdown () {
-        countdown = 12;
+        countdown = 120;
     }
     public static void cancelCountdown () {
         countdown = -1;

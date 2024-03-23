@@ -58,15 +58,27 @@ public class RoundManager {
                 nextLevel();
         }
         if (roundId == 2) {
+            if (timer == 0 || currentLevel == nextLevel) {
+                ++roundId;
+                setNextLevel(100, 300);
+                return;
+            }
             if (timer % (targetTime / nextLevel) == 0)
                 nextLevel();
-            if (timer == 0) {
-                ++roundId;
-                setNextLevel(118, 300);
-            }
+        }
+        if (roundId == 2) {
+            if (currentLevel == nextLevel)
+                return;
+            if (timer % (targetTime / nextLevel) == 0)
+                nextLevel();
         }
         if (timer > -1)
             --timer;
+        if (timer % 5 == 0) {
+            for (Player p : PlayerManager.getPlayers())
+                p.getInventory().addItem(new ItemStack(Material.CHERRY_PLANKS));
+        }
+
 
     }
 
@@ -78,6 +90,8 @@ public class RoundManager {
         Main.getWorld().setGameRule(GameRule.SPECTATORS_GENERATE_CHUNKS, false);
         Main.getWorld().setGameRule(GameRule.DO_DAYLIGHT_CYCLE, true);
         Main.getWorld().setGameRule(GameRule.DO_INSOMNIA, false);
+
+        GrapplingHook gh = new GrapplingHook();
 
         for (Player player : Bukkit.getOnlinePlayers()) {
             player.sendMessage(ChatColor.GREEN + "The game has begun. Good luck...");
@@ -93,7 +107,7 @@ public class RoundManager {
             player.setFoodLevel(20);
             player.setSaturation(10.0F);
             player.getWorld().setTime(0);
-            showLevelBossBar();
+
 
 
             if (!Main.isHardcore()) {
@@ -101,21 +115,27 @@ public class RoundManager {
                 player.addPotionEffect(new PotionEffect(PotionEffectType.REGENERATION, timer * 20, 4, false, false));
 
                 player.getInventory().setHelmet(new ItemStack(Material.CHAINMAIL_HELMET));
-                player.getInventory().setHelmet(new ItemStack(Material.CHAINMAIL_CHESTPLATE));
-                player.getInventory().setHelmet(new ItemStack(Material.CHAINMAIL_LEGGINGS));
-                player.getInventory().setHelmet(new ItemStack(Material.CHAINMAIL_BOOTS));
+                player.getInventory().setChestplate(new ItemStack(Material.CHAINMAIL_CHESTPLATE));
+                player.getInventory().setLeggings(new ItemStack(Material.CHAINMAIL_LEGGINGS));
+                player.getInventory().setBoots(new ItemStack(Material.CHAINMAIL_BOOTS));
 
                 player.getInventory().addItem(new ItemStack(Material.STONE_SWORD));
                 player.getInventory().addItem(new ItemStack(Material.STONE_PICKAXE));
                 player.getInventory().addItem(new ItemStack(Material.STONE_AXE));
                 player.getInventory().addItem(new ItemStack(Material.STONE_SHOVEL));
 
+                player.getInventory().addItem(new ItemStack(Material.SPONGE));
+
+                player.getInventory().addItem(gh.getHook());
                 player.getInventory().addItem(new ItemStack(Material.APPLE, 4));
 
                 player.getInventory().addItem(new ItemStack(Material.BOW));
                 player.getInventory().addItem(new ItemStack(Material.ARROW, 16));
+
+                player.getInventory().addItem(new ItemStack(Material.COBBLESTONE, 64));
             }
         }
+        showLevelBossBar();
 
         taskId = Bukkit.getScheduler().scheduleSyncRepeatingTask(Main.getInstance(), new Runnable() {
             @Override
