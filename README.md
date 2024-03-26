@@ -1,4 +1,4 @@
-##Floor Is Lava##
+# Floor Is Lava
 A Minecraft minigame where players must fight each other while avoiding a constantly rising pool of lava!
 
 **Gameplay**
